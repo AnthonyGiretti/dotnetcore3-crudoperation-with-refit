@@ -16,15 +16,15 @@ namespace DemoRefit.Repositories
         Task<Country> GetAsync(int id);
 
         [Post("/api/democrud/create")]
-        Task<Country> PostAsync([Body] Country country);
+        Task CreateAsync([Body] Country country);
 
         [Put("/api/democrud/update/{id}")]
-        Task<Country> PutAsync(int id, [Body] Country country);
+        Task ReplaceAsync(int id, [Body] Country country);
 
         [Patch("/api/democrud/update/{id}/description")]
-        Task<Country> PatchAsync(int id, [Body]string description);
+        Task UpdateAsync(int id, [Body]string description);
 
         [Delete("/api/democrud/delete/{id}")]
-        Task<Country> DeleteAsync(int id);
+        Task DeleteAsync(int id);
     }
 }
