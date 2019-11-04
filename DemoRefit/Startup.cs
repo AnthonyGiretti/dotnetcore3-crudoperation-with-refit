@@ -28,9 +28,8 @@ namespace DemoRefit
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
             services.AddRefitClient<ICountryRepository>()
-                    .ConfigureHttpClient(c => c.BaseAddress = new Uri(Configuration.GetSection("Apis:ApiCountry:Url").Value));
+                    .ConfigureHttpClient(c => c.BaseAddress = new Uri(Configuration.GetSection("Apis:CountryApi:Url").Value));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
