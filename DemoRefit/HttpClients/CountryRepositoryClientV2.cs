@@ -30,7 +30,7 @@ namespace DemoRefit.HttpClients
                 }
                 catch (Exception e)
                 {
-                    _logger.LogError(e, "Something went wrong");
+                    _logger.LogError(e, "Failed to read content");
                     return null;
                 }
             }
