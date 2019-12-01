@@ -1,3 +1,4 @@
+using DemoRefit.Handlers;
 using DemoRefit.HttpClients;
 using DemoRefit.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -23,11 +24,15 @@ namespace DemoRefit
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpContextAccessor();
+
             services.AddControllers();
+
             services.AddRefitClient<ICountryRepository>()
                     .ConfigureHttpClient(c => c.BaseAddress = new Uri(Configuration.GetSection("Apis:CountryApi:Url").Value));
+
             services.AddHttpClient<ICountryRepositoryClient, CountryRepositoryClient>()
-                    .ConfigureHttpClient(c => c.BaseAddress = new Uri(Configuration.GetSection("Apis:CountryApi:Url").Value));
+                    .ConfigureHttpClient(c => c.BaseAddress = new Uri(Configuration.GetSection("Apis:CountryApi:Url").Value))
+                    .AddHttpMessageHandler<MyDelegatingHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
