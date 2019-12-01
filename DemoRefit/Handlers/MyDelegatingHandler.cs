@@ -34,6 +34,7 @@ namespace DemoRefit.Handlers
                 }
                 request.Headers.Authorization = new AuthenticationHeaderValue("bearer", accessToken);
                 httpResponseMessage = await base.SendAsync(request, cancellationToken);
+                httpResponseMessage.EnsureSuccessStatusCode();
             }
             catch (Exception ex)
             {

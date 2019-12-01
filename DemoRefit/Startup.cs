@@ -30,7 +30,10 @@ namespace DemoRefit
             services.AddRefitClient<ICountryRepository>()
                     .ConfigureHttpClient(c => c.BaseAddress = new Uri(Configuration.GetSection("Apis:CountryApi:Url").Value));
 
-            services.AddHttpClient<ICountryRepositoryClient, CountryRepositoryClient>()
+            //services.AddHttpClient<ICountryRepositoryClient, CountryRepositoryClient>()
+            //        .ConfigureHttpClient(c => c.BaseAddress = new Uri(Configuration.GetSection("Apis:CountryApi:Url").Value));
+
+            services.AddHttpClient<ICountryRepositoryClient, CountryRepositoryClientV2>()
                     .ConfigureHttpClient(c => c.BaseAddress = new Uri(Configuration.GetSection("Apis:CountryApi:Url").Value))
                     .AddHttpMessageHandler<MyDelegatingHandler>();
         }
