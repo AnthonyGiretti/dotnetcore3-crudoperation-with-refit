@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace DemoRefit.HttpClients
@@ -28,11 +29,12 @@ namespace DemoRefit.HttpClients
         {
             try
             {
-                string tokenAsync = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
-                if (string.IsNullOrEmpty(tokenAsync))
+                string accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
+                if (string.IsNullOrEmpty(accessToken))
                 {
                     throw new Exception("Access token is missing");
                 }
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", accessToken);
 
                 using (HttpResponseMessage response = await _client.GetAsync("/api/democrud"))
                 {
