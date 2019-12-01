@@ -17,7 +17,6 @@ namespace DemoRefit.HttpClients
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<CountryRepositoryClient> _logger;
 
-
         public CountryRepositoryClient(HttpClient client, ILogger<CountryRepositoryClient> logger, IHttpContextAccessor httpContextAccessor)
         {
             _client = client;

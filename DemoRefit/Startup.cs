@@ -1,3 +1,4 @@
+using DemoRefit.HttpClients;
 using DemoRefit.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,6 +25,8 @@ namespace DemoRefit
             services.AddHttpContextAccessor();
             services.AddControllers();
             services.AddRefitClient<ICountryRepository>()
+                    .ConfigureHttpClient(c => c.BaseAddress = new Uri(Configuration.GetSection("Apis:CountryApi:Url").Value));
+            services.AddHttpClient<ICountryRepositoryClient, CountryRepositoryClient>()
                     .ConfigureHttpClient(c => c.BaseAddress = new Uri(Configuration.GetSection("Apis:CountryApi:Url").Value));
         }
 
