@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Refit;
 using System;
+using System.Linq;
 
 namespace DemoRefit
 {
@@ -30,12 +31,15 @@ namespace DemoRefit
             services.AddRefitClient<ICountryRepository>()
                     .ConfigureHttpClient(c => c.BaseAddress = new Uri(Configuration.GetSection("Apis:CountryApi:Url").Value));
 
-            //services.AddHttpClient<ICountryRepositoryClient, CountryRepositoryClient>()
-            //        .ConfigureHttpClient(c => c.BaseAddress = new Uri(Configuration.GetSection("Apis:CountryApi:Url").Value));
+            services.AddHttpClient<ICountryRepositoryClient, CountryRepositoryClient>()
+                    .ConfigureHttpClient(c => c.BaseAddress = new Uri(Configuration.GetSection("Apis:CountryApi:Url").Value));
 
             services.AddHttpClient<ICountryRepositoryClient, CountryRepositoryClientV2>()
                     .ConfigureHttpClient(c => c.BaseAddress = new Uri(Configuration.GetSection("Apis:CountryApi:Url").Value))
                     .AddHttpMessageHandler<MyDelegatingHandler>();
+
+            var descriptorICountryRepository = services.FirstOrDefault(descriptor => descriptor.ServiceType == typeof(ICountryRepository));
+            var isRemoved = services.Remove(descriptorICountryRepository);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

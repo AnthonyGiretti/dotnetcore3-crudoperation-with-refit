@@ -31,6 +31,13 @@ namespace DemoRefit.Handlers
                     throw new Exception($"Access token is missing for the request {request.RequestUri}");
                 }
                 request.Headers.Authorization = new AuthenticationHeaderValue("bearer", accessToken);
+
+                var headers = _httpContextAccessor.HttpContext.Request.Headers;
+                if (headers.ContainsKey("X-Correlation-ID") && !string.IsNullOrEmpty(headers["X-Correlation-ID"]))
+                {
+                    request.Headers.Add("X-Correlation-ID", headers["X-Correlation-ID"].ToString());
+                }
+
                 httpResponseMessage = await base.SendAsync(request, cancellationToken);
                 httpResponseMessage.EnsureSuccessStatusCode();
             }

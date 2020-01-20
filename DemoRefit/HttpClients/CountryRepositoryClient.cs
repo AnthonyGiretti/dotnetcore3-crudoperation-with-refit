@@ -3,8 +3,10 @@ using DemoRefit.Repositories;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -34,6 +36,12 @@ namespace DemoRefit.HttpClients
                     throw new Exception("Access token is missing");
                 }
                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", accessToken);
+
+                var headers = _httpContextAccessor.HttpContext.Request.Headers;
+                if (headers.ContainsKey("X-Correlation-ID") && !string.IsNullOrEmpty(headers["X-Correlation-ID"]))
+                {
+                    _client.DefaultRequestHeaders.Add("X-Correlation-ID", headers["X-Correlation-ID"].ToString());
+                }
 
                 using (HttpResponseMessage response = await _client.GetAsync("/api/democrud"))
                 {
